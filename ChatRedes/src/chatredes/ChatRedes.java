@@ -10,10 +10,6 @@ todos os usuários logados. Claudio pediu que em ambas as abas apareçam os usu�
  */
 package chatredes;
 
-/**
- *
- * @author andre
- */
 public class ChatRedes {
 
     /**

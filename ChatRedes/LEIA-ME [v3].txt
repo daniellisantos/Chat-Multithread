@@ -1,0 +1,9 @@
+Programa vai comecar rodando abrindo a janela LOGIN;
+Quando ela abrir ja vai automaticamente conectar (criar socket) ao servidor;
+O servidor retorna a lista de salas disponiveis;
+o cliente entra com seu login, seleciona a sala e diz o caminho da pasta para compartilhar;
+Quando clicar em ENTRAR o objeto "conectar" passa esses dados anteriores para o "servidor" que armazena eles no mesmo objeto "usuario" ja inicializado com o socket e o adiciona a lista de usuarios.
+
+Observacoes para testar:
+Rodar primeiro o servidor (clique com botao direito sobre o arquivo "Servidor.java" e clique em Executar Arquivo [ou abra a classe e aperte shift+F6]);
+Faca o mesmo processo para "JanelaLogin.java" (vai abrir a tela, tem que ser colocado pelo menos um caminho certo, para nao dar erro [coloquem uma pasta com poucos arquivos, so por garantia rs]).
