@@ -1,6 +1,7 @@
 package chatredes;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Usuario {
     private ArrayList<String> listaArq;
     private String caminhoPasta;
     private String sala;
+    private InetAddress salaChat = null;
 
     public Usuario(String nomeUsuario, List<String> listaArq) throws IOException {//desconsiderar esse construtor, por enquanto
         this.nomeUsuario=nomeUsuario;
@@ -49,6 +51,13 @@ public class Usuario {
     public void setCaminhoPasta(String caminhoPasta) {
         this.caminhoPasta = caminhoPasta;
     }
+    public InetAddress getSalaChat() {
+        return salaChat;
+    }
+    public void setSalaChat(InetAddress salaChat) {
+        this.salaChat = salaChat;
+    }
+
     
     public void imprimirListaArq(){
         for(int i=0; i<listaArq.size(); i++)

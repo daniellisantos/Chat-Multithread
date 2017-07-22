@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -13,10 +15,10 @@ import java.util.regex.Pattern;
 public final class Servidor implements Runnable{
     
     //private static String servidor = "localhost"; //endereco do servidor
-    private static int porta = 6790; // porta do servidor
+    private static int porta = 6790; // porta do servidor (tanto unicast como multicast)
     private Usuario usuario;
     private ArrayList<Usuario> usuarios = new ArrayList<>();
-    private String salas = "Redes de Computadores II;Programacao Movel;Banco de Dados";
+    private String salas = "Redes de Computadores II;Programacao Movel;Banco de Dados;Administracao";
     ServerSocket socketInicial; //socket que vai ficar recebendo todas as conexoes na thread principal
     
     public Servidor() throws IOException{
@@ -41,18 +43,37 @@ public final class Servidor implements Runnable{
             String dadosBrutoUsuario = doUsuario.readLine();//pega os bytes enviados do cliente e salva como String
             String[] dadosUsuario = dadosBrutoUsuario.split(Pattern.quote(";"));
             usuario.setNomeUsuario(dadosUsuario[0]);//pega o nome de usuario
-            usuario.setSala(dadosUsuario[1]);//passando int aqui, depois associonar o numero à sala correta.
+            usuario.setSala(dadosUsuario[1]);//pega a sala (o nome como String)
             String[] temp = dadosUsuario[2].split(Pattern.quote(":"));//separar a lista de arquivos
             ArrayList<String> temp2 = new ArrayList<>();//converter de String[] para ArrayList
             for(int i=0; i<temp.length; i++)
                 temp2.add(temp[i]);
             usuario.setListaArq(temp2);//passa o ArrayList para o objeto usuario
             usuario.setCaminhoPasta(dadosUsuario[3]);
-            usuarios.add(usuario);
-            System.out.println("Dados recebidos. Inserido na lista de Usuarios Ativos com sucesso! \n");
-//            System.out.println("TESTE: \nlista de arquivos:");
-//            for(int i=0; i<usuario.getListaArq().size(); i++)
-//                System.out.println(usuario.getListaArq().get(i));
+            
+            //usuarios.add(usuario); //adicionado a uma lista geral, mas quando a parte de multithrea/salas estiver ok, sera add la
+            //System.out.println("Dados recebidos. Inserido na lista de Usuarios Ativos com sucesso! \n");
+            
+            //DIRECIONANDO PARA A SALA DE CHAT CORRETA:
+            switch(usuario.getSala()){
+                case "Redes de Computadores II":
+                    //insere o usuario no grupo do multithread certo e chama a thead
+                    InetAddress ipGrupo = InetAddress.getByName("224.225.226.227");
+                    MulticastSocket socketMulticast = new MulticastSocket(porta);
+                    socketMulticast.joinGroup(ipGrupo);
+                    usuario.setSalaChat(ipGrupo);
+                    break;
+                case "Programacao Movel":
+                    //insere o usuario no grupo do multithread certo e chama a thead
+                    break;
+                case "Banco de Dados":
+                    //insere o usuario no grupo do multithread certo e chama a thead
+                    break;
+                case "Administracao":
+                    //insere o usuario no grupo do multithread certo e chama a thead
+                    break;
+            }
+            
         }
     }
     

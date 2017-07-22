@@ -1,5 +1,5 @@
 
-import chatredes.ConectarServidor;
+import fachadas.ConectarServidor;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
@@ -163,6 +163,7 @@ public class JanelaLogin extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -189,6 +190,7 @@ public class JanelaLogin extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         this.dispose();
         new JanelaChat().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
