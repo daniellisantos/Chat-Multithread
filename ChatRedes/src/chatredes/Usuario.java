@@ -12,6 +12,7 @@ public class Usuario {
     private String nomeUsuario;
     private Socket socketCliente;
     private ArrayList<String> listaArq;
+    private String caminhoPasta;
     private String sala;
 
     public Usuario(String nomeUsuario, List<String> listaArq) throws IOException {//desconsiderar esse construtor, por enquanto
@@ -42,6 +43,12 @@ public class Usuario {
     public void setSala(String sala) {
         this.sala = sala;
     }    
+    public String getCaminhoPasta() {
+        return caminhoPasta;
+    }
+    public void setCaminhoPasta(String caminhoPasta) {
+        this.caminhoPasta = caminhoPasta;
+    }
     
     public void imprimirListaArq(){
         for(int i=0; i<listaArq.size(); i++)

@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class ConectarServidor {
     
@@ -24,8 +26,8 @@ public class ConectarServidor {
         return listaSalas;
     }
     
-    public void setDadosLogin(String login, String sala, String arquivosPasta) throws IOException{
-        String dados = login+";"+sala+";"+arquivosPasta+"\n";
+    public void setDadosLogin(String login, String sala, String arquivosPasta, String caminhoPasta) throws IOException{
+        String dados = login+";"+sala+";"+arquivosPasta+";"+caminhoPasta+"\n";
         outToServer.writeBytes(dados);
     }
     

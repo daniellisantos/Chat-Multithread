@@ -1,10 +1,14 @@
 
 import chatredes.ConectarServidor;
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.swing.JTextField;
 
 
 public class JanelaLogin extends javax.swing.JFrame {
@@ -15,6 +19,7 @@ public class JanelaLogin extends javax.swing.JFrame {
     private String caminhoPasta;
     private String arquivosPasta = "";
     ConectarServidor conectar;
+    JanelaChat chat;
     
     
     
@@ -22,10 +27,23 @@ public class JanelaLogin extends javax.swing.JFrame {
      * Creates new form Interface
      */
     public JanelaLogin() throws IOException {
-        initComponents();
-        conectar = new ConectarServidor();
+        initComponents(); //inicializa a tela login
+        conectar = new ConectarServidor(); //cria o socket e estabelece conexao com servidor
+        
         jTextField1.requestFocus();
-        jComboBox1.addItem(conectar.getListaSalas());
+        //placeholder do campo LOGIN:
+        TextPrompt placeholder = new TextPrompt("Maria123", jTextField1);
+        placeholder.setForeground(Color.GRAY);
+        placeholder.changeAlpha(0.8f);
+        //placeholder.changeStyle(Font.BOLD);
+        placeholder.changeStyle(Font.ITALIC);
+        
+        //inicializar a lista de salas de chat:
+        jComboBox1.removeAllItems();//remove os itens de exemplo que vem de padrao
+        String temp = conectar.getListaSalas(); //recebe a lista de salas e salva numa String
+        String[] temp2 = temp.split(Pattern.quote(";"));//converte de String para String[] usando os ";" como divisores
+        for(int i=0; i<temp2.length; i++)
+            jComboBox1.addItem(temp2[i]); //preenche a lista de salas
     }
 
     /**
@@ -49,17 +67,31 @@ public class JanelaLogin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.setText("ex: Maria");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setText("LOGIN:");
+        jLabel1.setText("USUÁRIO:");
 
         jLabel2.setText("SALA:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("COMPARTILHAR:");
 
-        jTextField2.setText("ex: C:\\Users\\Fulano\\Documents");
+        jTextField2.setText("D:\\teste");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("ENTRAR");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -86,20 +118,17 @@ public class JanelaLogin extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(22, 22, 22)
-                                        .addComponent(jLabel2))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(jLabel1)))
+                                .addGap(145, 145, 145)
+                                .addComponent(jLabel5))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jComboBox1, 0, 126, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(145, 145, 145)
-                                .addComponent(jLabel5)))
+                                    .addComponent(jComboBox1, 0, 270, Short.MAX_VALUE)
+                                    .addComponent(jTextField1))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -147,21 +176,34 @@ public class JanelaLogin extends javax.swing.JFrame {
         File[] listaArquivos = pasta.listFiles();
         for (int i=0; i<listaArquivos.length; i++) {
             if (listaArquivos[i].isFile()) {
-                arquivosPasta = arquivosPasta + listaArquivos[i].getName()+";";
+                arquivosPasta = arquivosPasta + listaArquivos[i].getName()+":";
             }
             else if (listaArquivos[i].isDirectory()) {
-                arquivosPasta += listaArquivos[i].getName()+";";
+                arquivosPasta += listaArquivos[i].getName()+":";
             }
         }
         
         //passa o restante dos dados:
         try {
-            conectar.setDadosLogin(login,sala,arquivosPasta);
+            conectar.setDadosLogin(login,sala,arquivosPasta, caminhoPasta);
         } catch (IOException ex) {
             Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
+        new JanelaChat().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,6 +238,7 @@ public class JanelaLogin extends javax.swing.JFrame {
             public void run() {
                 try {
                     new JanelaLogin().setVisible(true);
+                    
                 } catch (IOException ex) {
                     Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
                 }

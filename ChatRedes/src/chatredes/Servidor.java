@@ -16,6 +16,7 @@ public final class Servidor implements Runnable{
     private static int porta = 6790; // porta do servidor
     private Usuario usuario;
     private ArrayList<Usuario> usuarios = new ArrayList<>();
+    private String salas = "Redes de Computadores II;Programacao Movel;Banco de Dados";
     ServerSocket socketInicial; //socket que vai ficar recebendo todas as conexoes na thread principal
     
     public Servidor() throws IOException{
@@ -33,19 +34,25 @@ public final class Servidor implements Runnable{
             System.out.println("Conexao aceita. Aguardando dados do usuario...");
             usuario = new Usuario(socketConexao);//inicializa um usuario com o seu socket
             DataOutputStream paraCliente = new DataOutputStream(socketConexao.getOutputStream());//inicializa uma varivel para enviar dados
-            paraCliente.writeBytes("sala redes II"+'\n');//envia as salas disponiveis para o cliente
-            BufferedReader doUsuario = new BufferedReader(new InputStreamReader(socketConexao.getInputStream()));//inicializa uma varivel com os dados vindos do cliente
+            paraCliente.writeBytes(salas+'\n');//envia as salas disponiveis para o cliente
+            
+            //RECEBENDO O RESTANTE DOS DADOS DO USUARIO:
+            BufferedReader doUsuario = new BufferedReader(new InputStreamReader(socketConexao.getInputStream()));//inicializa uma varivel com os dados vindos do cliente        
             String dadosBrutoUsuario = doUsuario.readLine();//pega os bytes enviados do cliente e salva como String
             String[] dadosUsuario = dadosBrutoUsuario.split(Pattern.quote(";"));
-            usuario.setNomeUsuario(dadosUsuario[0]);
+            usuario.setNomeUsuario(dadosUsuario[0]);//pega o nome de usuario
             usuario.setSala(dadosUsuario[1]);//passando int aqui, depois associonar o numero à sala correta.
-            String[] temp = dadosUsuario[2].split(Pattern.quote(";"));//separar a lista de arquivos
+            String[] temp = dadosUsuario[2].split(Pattern.quote(":"));//separar a lista de arquivos
             ArrayList<String> temp2 = new ArrayList<>();//converter de String[] para ArrayList
             for(int i=0; i<temp.length; i++)
                 temp2.add(temp[i]);
             usuario.setListaArq(temp2);//passa o ArrayList para o objeto usuario
+            usuario.setCaminhoPasta(dadosUsuario[3]);
             usuarios.add(usuario);
             System.out.println("Dados recebidos. Inserido na lista de Usuarios Ativos com sucesso! \n");
+//            System.out.println("TESTE: \nlista de arquivos:");
+//            for(int i=0; i<usuario.getListaArq().size(); i++)
+//                System.out.println(usuario.getListaArq().get(i));
         }
     }
     
