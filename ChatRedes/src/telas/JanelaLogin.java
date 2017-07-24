@@ -184,15 +184,19 @@ public class JanelaLogin extends javax.swing.JFrame {
             }
         }
         
-        //passa o restante dos dados:
         try {
+            //passa o restante dos dados:
             conectar.setDadosLogin(login,sala,arquivosPasta, caminhoPasta);
         } catch (IOException ex) {
             Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+                
         this.dispose();
-        new JanelaChat().setVisible(true);
+        try {
+            new JanelaChat(login, conectar).setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -240,7 +244,6 @@ public class JanelaLogin extends javax.swing.JFrame {
             public void run() {
                 try {
                     new JanelaLogin().setVisible(true);
-                    
                 } catch (IOException ex) {
                     Logger.getLogger(JanelaLogin.class.getName()).log(Level.SEVERE, null, ex);
                 }
