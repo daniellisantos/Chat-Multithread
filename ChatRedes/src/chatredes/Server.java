@@ -1,21 +1,22 @@
 package chatredes;
 
 import java.util.Stack;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Server {
-
+   
     public static void main(String argv[]) throws Exception {
         
-        Stack pilha = new Stack();
+        ArrayBlockingQueue pilha = new ArrayBlockingQueue(5);
         
-        pilha.push(new Message("bruno", "bruno2", "Redes II", "Olá, tudo bem?"));
+        pilha.put(new Message("bruno2", "bruno1", "Redes II", "Tudo certo!"));
 
         Runnable r;
         r = () -> {
-            if (!pilha.empty())
+            if (!pilha.isEmpty())
             {
-                System.out.println(((Message)pilha.pop()).texto);
-            }
+                System.out.println(((Message)pilha.poll()).texto);
+            }   
         };
         Thread t = new Thread(r);
         t.start();
