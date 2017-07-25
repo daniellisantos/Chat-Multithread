@@ -1,6 +1,5 @@
 package chatredes;
 
-import java.util.Stack;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Server {
