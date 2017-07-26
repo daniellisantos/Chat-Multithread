@@ -102,4 +102,18 @@ public class ConectarServidor implements Runnable {
             Logger.getLogger(ConectarServidor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+     public ListModel<String> atualizarLista() throws IOException 
+        {  
+         
+       String receber;
+       DefaultListModel usuariosOnline  = new DefaultListModel();// tem q ser do tipo model pra ser compativel no Jlist
+       BufferedReader usuarioOnline = new BufferedReader(new InputStreamReader(socketClienteTCP.getInputStream()));// variavel q recebe os nomes dos usuarrios  vindos do servidor
+       receber =usuarioOnline.readLine(); //recebe
+        for( int i =0; i< 2; i++)// coloquei até dois pra testar
+            {
+            usuariosOnline.add(i,receber);// passa para variavel do tipo model para enviar para Jlist               
+         }
+        return usuariosOnline;
+    }
 }
