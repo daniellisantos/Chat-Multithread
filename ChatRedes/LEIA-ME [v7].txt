@@ -10,12 +10,4 @@ A thread retorna a lista de salas disponiveis para janelaLogin;
 O usuario seleciona a sala, entra com nome de usuario e caminho da pasta;
 Quando clicar em entrar a tela janelaLogin encerra e chama a tela janelaChat, passando a instancia de conectarServidor por parametro;
 JanelaChat termina de passar os dados para o servidor, que nesse momento ja esta rodando na thread;
-A thread direciona o cliente para a sala multicast correta dele e entra no while para ficar escutando UDP;
-Quando o usuario digita na caixa de texto e envia aparece no servidor.
-
-O Problema:
-So um usuario conecta por vez, pois a thread que escuta em UDP ja esta em uso. Tem que modificar isso ou criar uma thread UDP no servidor para casa usuario que conectar (que eu acho que e o certo);
-
-Possiveis solucoes:
-Acredito que, como dito, vao ter que ser criadas threads TCP, UDP e Multicast no servidor para cada cliente que conectar, ou seja, cada cliente vai ter 3 conexoes com o servidor;
-Acho que elas podem ser criadas, do lado do usuario, na tela janelaChat. Do lado do servidor ainda nao sei;
+A thread direciona o cliente para a sala multicast correta dele.

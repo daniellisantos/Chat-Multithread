@@ -1,5 +1,4 @@
 
-import chatredes.Usuario;
 import fachadas.ConectarServidor;
 import java.awt.Color;
 import java.awt.Font;
@@ -9,7 +8,7 @@ import java.util.logging.Logger;
 
 public class JanelaChat extends javax.swing.JFrame {
 
-    ConectarServidor conectar;
+    ConectarServidor conexao;
     //ConexaoUDP conectarUDP = new ConexaoUDP();
     
     /**
@@ -17,11 +16,8 @@ public class JanelaChat extends javax.swing.JFrame {
      */
     public JanelaChat(String login, ConectarServidor conectar) throws IOException {
         initComponents();
-        this.conectar = conectar; //copia a instancia de conectar criada em janelaLogin para cá
+        this.conexao = conectar; //copia a instancia de conectar criada em janelaLogin para cá
         conectar.enviarDadosLogin(); //termina de mandar os dados do usuario para o servidor
-        conectar.conectarUDP(); //cria conexao udp com servidor
-        
-        
         
         jLabel7.setText(login);
         jLabel8.setText(login);
@@ -35,7 +31,6 @@ public class JanelaChat extends javax.swing.JFrame {
         //placeholder do campo ARQUIVO (aba arquivos):
         TextPrompt placeholder3 = new TextPrompt("arquivo_exemplo.txt", jTextField3);
         placeholder3.setForeground(Color.GRAY); placeholder3.changeAlpha(0.8f); placeholder3.changeStyle(Font.ITALIC);
-
     }
 
 
@@ -309,24 +304,22 @@ public class JanelaChat extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // QUANDO O USUARIO CLICAR EM ENVIAR:
+        // QUANDO O USUARIO CLICAR EM ENVIAR:      
+        String mensagem = jTextField1.getText()+"|";
+        String usuarioDestino = jList1.getSelectedValue().toString();
         
-        //inserir um IF aqui para saber se é para todos, se for ir para multicast, se não vai para UDP
-        //se mensagem for UDP:
-        String mensagem = jTextField1.getText()+"¨";
-        Usuario usuarioDestino = (Usuario) jList1.getSelectedValue();
-        try {
-            conectar.mandarMensagemUDP(mensagem, usuarioDestino);
-        } catch (IOException ex) {
-            Logger.getLogger(JanelaChat.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        jTextField1.setText("");
-        jTextField1.requestFocus();
         
         //se mensagem for multicast:
-        
-        
-        
+        if("Item 1".equals(usuarioDestino)){
+            try {
+//                conexao.conectarMulticast();
+                Thread thread = new Thread (new ConectarServidor());
+                thread.start();
+                conexao.enviarMensagemMulticast(mensagem);
+            } catch (IOException ex) {
+                Logger.getLogger(JanelaChat.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

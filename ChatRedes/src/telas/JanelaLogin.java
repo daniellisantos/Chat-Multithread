@@ -8,19 +8,16 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.JTextField;
 
 
 public class JanelaLogin extends javax.swing.JFrame {
 
     private String login;
-    private ArrayList<String> salas = new ArrayList<>();
     private String sala;
     private String caminhoPasta;
     private String arquivosPasta = "";
     ConectarServidor conectar;
     JanelaChat chat;
-    
     
     
     /**
